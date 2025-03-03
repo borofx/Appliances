@@ -115,5 +115,6 @@ namespace appliances
                 default: return 3.0;
             }
         }
+
     }
 }

@@ -45,11 +45,20 @@ public class ApplianceStore
 
     public void AddAppliance(Appliance appliance)
     {
-        if (appliance == null)
-            throw new ArgumentException("Appliance cannot be null.");
+        try
+        {
+            if (appliance == null)
+                throw new ArgumentException("Appliance cannot be null.");
 
-        Appliances.Add(appliance);
+            Appliances.Add(appliance);
+            Console.WriteLine($"Appliance added successfully: {appliance.Code}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding appliance: {ex.Message}");
+        }
     }
+
 
     public void RemoveAppliance(string code)
     {
@@ -78,17 +87,24 @@ public class ApplianceStore
 
     public List<Appliance> SearchByManufacturer(string manufacturer)
     {
-        return Appliances.Where(a => a.Manufacturer == manufacturer).ToList();
+        return Appliances.Where(a => a.Manufacturer.Equals(manufacturer, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 
     public List<Appliance> GetTop10ByEfficiency(string type)
     {
-        return Appliances
-            .Where(a => a.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
-            .OrderByDescending(a => a.Efficiency) 
-            .ThenBy(a => a.Consumption)
-            .Take(10)
-            .ToList();
+        try
+        {
+            return Appliances
+                .Where(a => a.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(a => a.CalculateEnergyEfficiecy()) 
+                .ThenBy(a => a.Consumption)
+                .Take(10)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error getting top 10 by efficiency: {ex.Message}");
+            return new List<Appliance>();
+        }
     }
-
 }
