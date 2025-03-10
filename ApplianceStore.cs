@@ -75,7 +75,8 @@ public class ApplianceStore
         decimal totalPrice = 0;
         foreach (var item in Appliances)
         {
-            totalPrice += (decimal)item.Price * item.Quantity;
+            Console.WriteLine(item.Code +" "+ item.Price + " "+item.Quantity);
+            totalPrice += (decimal)item.Price * (decimal)item.Quantity;
         }
         return totalPrice;
     }
@@ -93,13 +94,15 @@ public class ApplianceStore
     public List<Appliance> GetTop10ByEfficiency(string type)
     {
         try
-        {
-            return Appliances
-                .Where(a => a.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
-                .OrderBy(a => a.CalculateEnergyEfficiecy()) 
+        {            
+            var temp =  Appliances
+                .Where(a => a.Type == type)
+                .OrderBy(a => a.CalculateEnergyEfficiecy())
                 .ThenBy(a => a.Consumption)
                 .Take(10)
                 .ToList();
+            Console.WriteLine(temp.Count);
+            return temp;
         }
         catch (Exception ex)
         {

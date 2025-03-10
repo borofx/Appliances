@@ -78,13 +78,14 @@
 
                     case "GetOutOfStock":
                         var outOfStockAppliances = store.GetOutOfStockAppliances();
-                        StreamWriter outStockWriter = new StreamWriter("outOfStock.txt");
+                        StreamWriter getOut = new StreamWriter("outOfStock.txt");
                         {
                             foreach (var item in outOfStockAppliances)
                             {
-                                outStockWriter.WriteLine($"Code: {item.Code}, Manufacturer: {item.Manufacturer}, Type: {item.Type}, Price: {item.Price}, Efficiency: {item.Efficiency}, Quantity: {item.Quantity}");
+                                getOut.WriteLine($"Code: {item.Code}, Manufacturer: {item.Manufacturer}, Type: {item.Type}, Price: {item.Price}, Efficiency: {item.Efficiency}, Quantity: {item.Quantity}");
                             }
                         }
+                        getOut.Close();
                         break;
 
                     case "CalculateTotalPrice":
@@ -92,8 +93,8 @@
                             Console.WriteLine($"Total Price: {totalPrice}");
                         break;
 
-                    case "GetTop10ByEfficiency":
-                        string typee = input[0];
+                    case "top10":
+                        string typee = input[1];
                         var top10List = store.GetTop10ByEfficiency(typee);
                         StreamWriter writerEf = new StreamWriter("getTop10.txt");
                         {
@@ -102,6 +103,7 @@
                                 writerEf.WriteLine($"Code: {item.Code}, Manufacturer: {item.Manufacturer}, Type: {item.Type}, Price: {item.Price}, Efficiency: {item.Efficiency}, Quantity: {item.Quantity}");
                             }
                         }
+                        writerEf.Close();
                         break;
                 }
             }
